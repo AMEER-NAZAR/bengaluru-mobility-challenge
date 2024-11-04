@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Counting Result</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+
+        h1 {
+            margin-bottom: 40px;
+            color: #fff; /* White title for contrast */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: add a shadow for better visibility */
+        }
+        .content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Media query for phones (up to 768px) */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: center; /* Optional: Center items horizontally */
+    }
+}
+        video {
+            width:100%;
+            height:100%;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            background-color: #000000;
+        }
+        .conn {
+        margin: 2%;
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+        gap: 10px; /* Optional: Adds space between the grid items */
+    }
+
+        .vehicle-count-card {
+            display: inline-block;
+            width: 90%;
+            margin: 2%;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.055); /* Semi-transparent background for blur effect */
+            backdrop-filter: blur(10px); /* Apply blur effect */
+            color: #ffffff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            animation: fadeIn 1s ease;
+            height: 120px;
+        }
+        
+        .vehicle-count-card:hover {
+            transform: scale(1.02);
+            background-color: rgba(255, 255, 255, 0.507); /* Darker on hover */
+            color:#242424;
+        }
+        .vehicle-count {
+            position: absolute;
+            top:-48%;
+            font-size: 900%;
+            font-weight: bold;
+            color:rgba(0, 0, 0, 0.74);
+        }
+        .vehicle-name {
+            position: absolute;
+            top:70%;
+            right:5%;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            font-family: "Poppins", sans-serif;
+                font-weight: 600;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 1.2em;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: rgba(40, 167, 69, 0.7); /* Semi-transparent green */
+            color: #ffffff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: rgba(40, 167, 69, 1); /* Fully opaque on hover */
+            color: #ffffff;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+        body {
+            background: url("/static/images/back.jpg");
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        /* Title Section */
+        .title-container {
+            background: linear-gradient(180deg, rgb(0, 0, 0) 00%  , rgba(0, 0, 0, 0));
+            width:100%;
+            padding: 20px 0;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius:20px ;
+            border-bottom-right-radius:20px ;
+        }
+
+            
+
+        body::before {
+            content: '.';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(farthest-side, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
+            background-size: 25px 25px;
+            animation: move-bg 10s linear infinite;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+        }
+        .title-container h1 {
+            font-size: 3em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            z-index: 1;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+            font-size: 7rem; /* Adjust the size as needed */
+            font-family: Arial, sans-serif;
+        }
+        .white-text {
+                color: rgba(255, 255, 255, 0.514);
+                font-family: "Syne", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 800;
+            }
+
+            .yellow-text {
+                color: rgb(255, 255, 109);
+                font-family: "Poppins", sans-serif;
+                font-weight: 600;
+                font-style: normal;
+            }
+        @keyframes move-bg {
+            0% { background-position: 0 0; }
+            100% { background-position: 1000px 1000px; }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .upload-container {
+            margin: 2%;
+            margin-bottom: 5%;
+            min-width: 30%;
+            max-width: 900px;
+            background-color: #ffffff1f;
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom Styles for File Input */
+        .custom-file-upload {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width:100%;
+            height:20vh auto;
+            cursor: pointer;
+            background: #0000001c;
+            color: white;
+            border:3px rgba(133, 133, 133, 0.329) dashed;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            transition: background 0.3s ease;
+            color: #b9b9b9;
+            font-size: 4rem;
+            backdrop-filter: blur(10px);
+            
+        }
+        .custom-file-upload:hover {
+            background: #00000049;
+        }
+        .file-input {
+            display: none;
+        }
+        #video-preview {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: none;
+            margin-bottom: 15px;
+        }
+        /* Processing overlay */
+        #processing-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        #processing-div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #ffffff;
+        }
+        .spinner-border {
+            width: 4rem;
+            height: 4rem;
+            border-width: 0.5rem;
+        }
+        .yellow{
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.185);
+            max-width: 50%;
+            color:rgba(32, 32, 32, 0.884);
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+            backdrop-filter: blur(10px);
+            height: 40px;
+            transition: .2s;
+        }
+        .left {
+            border-radius: 10px 0px 0px 10px;
+            border:0px rgba(255, 255, 255, 0);
+            margin-left: 5%;
+        }
+        .right {
+            border-radius: 0px 10px 10px 0px;
+            border:0px rgba(255, 255, 255, 0);
+            margin-right: 7%;
+        }
+        .yellow:hover{
+            background-color: rgb(209, 209, 89);
+            color:rgba(32, 32, 32, 0.582);
+        }
+        .yellow:focus{
+            background-color: rgb(209, 209, 89);
+            color:rgba(32, 32, 32, 0.582);
+            border:none;
+        }
+        .button-class {
+            display: flex;
+            justify-content:space-around;
+        }
+        .yactive{
+            background-color: rgb(209, 209, 89);
+            color:rgba(32, 32, 32, 0.582);
+        }
+        .c-hidd {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Title Section -->
+    <div class="title-container">
+        <h1>
+            <span class="white-text">Traff-</span><span class="yellow-text">IQ</span>
+        </h1>
+    </div>
+    <div class="container content">
+        <div class = "upload-container">
+            <video controls>
+                <source src="{{ url_for('send_processed_video', filename=video_file) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <div class="container-fluid">
+            <div class = "button-class">
+                <button id = "b-in" class="yellow btn-block mt-4 left yactive">Outgoing</button>
+                <button id = "b-out" class="yellow btn-block mt-4 right">Incoming</button>
+            </div>
+            <div class="container">   
+                <div id="in" class="row justify-content-center conn">
+                    {% for vehicle, count in in_count.items() %}
+                        <div class="vehicle-count-card">
+                            <div class="vehicle-count">{{ count }}</div>
+                            <div class="vehicle-name">{{ vehicle }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="container">   
+                <div id="out" class="row justify-content-center conn c-hidd">
+                    {% for vehicle, count in out_count.items() %}
+                        <div class="vehicle-count-card">
+                            <div class="vehicle-count">{{ count }}</div>
+                            <div class="vehicle-name">{{ vehicle }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+    <a href="/" class="back-link">Go Back</a>
+
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        function toggleDisplay(buttonId) {
+        const inDiv = document.getElementById("in");
+        const outDiv = document.getElementById("out");
+        const buttonIn = document.getElementById("b-in");
+        const buttonOut = document.getElementById("b-out");
+
+        if (buttonId === "b-in") {
+            // Show the 'in' div and hide the 'out' div
+            inDiv.style.display = "grid";
+            outDiv.style.display = "none";
+            
+            // Add the 'yactive' class to the 'b-in' button and remove from 'b-out'
+            buttonIn.classList.add("yactive");
+            buttonOut.classList.remove("yactive");
+        } else if (buttonId === "b-out") {
+            // Show the 'out' div and hide the 'in' div
+            outDiv.style.display = "grid";
+            inDiv.style.display = "none";
+            
+            // Add the 'yactive' class to the 'b-out' button and remove from 'b-in'
+            buttonOut.classList.add("yactive");
+            buttonIn.classList.remove("yactive");
+        }
+        }
+
+        // Add event listeners to the buttons
+        document.getElementById("b-in").addEventListener("click", function() {
+            toggleDisplay("b-in");
+        });
+
+        document.getElementById("b-out").addEventListener("click", function() {
+            toggleDisplay("b-out");
+        });
+    </script>
+</body>
+</html>
+

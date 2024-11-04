@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Counter</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400..800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+        
+        body {
+            background: url("/static/images/back.jpg");
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Title Section */
+        .title-container {
+            background: linear-gradient(180deg, rgb(0, 0, 0) 00%, rgba(0, 0, 0, 0));
+            width: 100%;
+            padding: 20px 0;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        body::before {
+            content: '.';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(farthest-side, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
+            background-size: 25px 25px;
+            animation: move-bg 10s linear infinite;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+        }
+
+        .title-container h1 {
+            font-size: 3em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            z-index: 1;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+            font-size: 7rem; /* Adjust the size as needed */
+            font-family: Arial, sans-serif;
+        }
+
+        .white-text {
+            color: rgba(255, 255, 255, 0.514);
+            font-family: "Syne", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+        }
+
+        .yellow-text {
+            color: rgb(255, 255, 109);
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @keyframes move-bg {
+            0% { background-position: 0 0; }
+            100% { background-position: 1000px 1000px; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .upload-container {
+            margin-top: 5%;
+            margin-bottom: 5%;
+            min-width: 30%;
+            max-width: 600px;
+            background-color: #ffffff1f;
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Custom Styles for File Input */
+        .custom-file-upload {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 100%;
+            height: 20vh auto;
+            cursor: pointer;
+            background: #0000001c;
+            color: white;
+            border: 3px rgba(133, 133, 133, 0.329) dashed;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            transition: background 0.3s ease;
+            color: #b9b9b9;
+            font-size: 4rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .custom-file-upload:hover {
+            background: #00000049;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        #video-preview {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        /* Canvas Styles */
+        #drawing-canvas {
+            border: 1px solid #fff;
+            width: 100%;
+            height: 300px; /* Adjust height as necessary */
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Processing overlay */
+        #processing-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        #processing-div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .spinner-border {
+            width: 4rem;
+            height: 4rem;
+            border-width: 0.5rem;
+        }
+
+        .yellow {
+            background-color: rgb(255, 255, 109);
+            border: none;
+            color: rgba(32, 32, 32, 0.582);
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .yellow:hover {
+            background-color: rgb(209, 209, 89);
+            color: rgba(32, 32, 32, 0.582);
+        }
+
+        .yellow:focus {
+            background-color: rgb(209, 209, 89);
+            color: rgba(32, 32, 32, 0.582);
+        }
+    </style>
+</head>
+<body>
+    <!-- Title Section -->
+    <div class="title-container">
+        <h1>
+            <span class="white-text">Traff-</span><span class="yellow-text">IQ</span>
+        </h1>
+    </div>
+
+    <div class="upload-container">
+        <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+            <div class="form-group text-center">
+                <label for="video" class="custom-file-upload">
+                    +
+                <video id="video-preview" controls></video>    
+                </label>
+                <input type="file" name="video" id="video" class="file-input" accept="video/*" required>
+            </div>
+            <!-- Video preview -->
+            
+
+            
+            <button type="submit" class="btn btn-primary yellow btn-block mt-4">Upload Video</button>
+        </form>
+    </div>
+
+    <!-- Processing overlay -->
+    <div id="processing-overlay">
+        <div id="processing-div">
+            <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Processing...</span>
+            </div>
+            <h3 id="processing-text">Processing...</h3>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        // Video preview functionality
+        
+
+        document.getElementById('video').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                console.log(file)
+                const videoPreview = document.getElementById('video-preview');
+                videoPreview.src = URL.createObjectURL(file);
+                videoPreview.style.display = 'block';
+            }
+        });
+        // Show processing overlay with sequential messages
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent immediate form submission
+            const overlay = document.getElementById('processing-overlay');
+            const processingText = document.getElementById('processing-text');
+
+            overlay.style.display = 'block';
+
+            const stages = [
+                "Uploading Video",
+                "Analyzing Video",
+                "Counting Vehicles"
+            ];
+
+            let currentStage = 0;
+
+            function showNextStage() {
+                if (currentStage < stages.length) {
+                    processingText.textContent = stages[currentStage];
+                    currentStage++;
+                    setTimeout(showNextStage, 5000); // 5 seconds per stage
+                } else {
+                    // After all stages, keep the final stage message
+                    processingText.textContent = "Counting Vehicles";
+                    // Allow form submission after displaying all messages
+                    setTimeout(() => {
+                        document.getElementById('upload-form').submit();
+                    }, 1000);
+                }
+            }
+
+            showNextStage();
+        });
+
+        // Trigger file input when custom button is clicked
+        document.querySelector('.custom-file-upload').addEventListener('click', function() {
+            document.getElementById('video').click();
+        });
+        
+    </script>
+</body>
+</html>
